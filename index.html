@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sadrekarimi (2016) Yield &amp; Liquefied Strength Ratios — Comparison Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--ink:#1d1f22;--mut:#666b73;--line:#e2e0d9;--acc:#2f5d8a;--hl:#9b2f5e;--hlbg:#fbf1f5;--warn:#a2620b;--sel:#eef3f9;--good:#2e7d4f}
+@media (prefers-color-scheme:dark){:root{--bg:#16181b;--card:#1f2226;--ink:#e8e6e1;--mut:#9aa0a8;--line:#33373d;--acc:#7fa9d6;--hl:#e07aa6;--hlbg:#2c2028;--warn:#e0a64e;--sel:#24303d;--good:#6cc08f}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "IBM Plex Sans",system-ui,sans-serif}
+main{max-width:1280px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:22px;font-weight:600;margin:0 0 4px}
+.sub{color:var(--mut);margin:0 0 20px;max-width:900px}
+.grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card.hero{border:2px solid var(--hl)}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:0 0 10px;font-weight:600}
+.hero h2{color:var(--hl)}
+fieldset{border:0;border-top:1px solid var(--line);margin:12px 0 0;padding:10px 0 0}
+legend{font-weight:600;font-size:13px;padding:0 6px 0 0}
+.row{display:grid;grid-template-columns:1fr 120px;gap:8px;align-items:center;margin:7px 0}
+.row label{font-size:13px}
+.row small{display:block;color:var(--mut);font-size:11.5px}
+input,select{width:100%;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:13px "IBM Plex Mono",monospace}
+input:focus,select:focus{outline:2px solid var(--acc);outline-offset:-1px}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:7px;overflow:hidden;margin:4px 0 8px}
+.seg button{border:0;background:var(--bg);color:var(--ink);padding:7px;font:600 13px "IBM Plex Sans";cursor:pointer}
+.seg button.on{background:var(--acc);color:#fff}
+.kc{font:13px "IBM Plex Mono",monospace;color:var(--hl);margin:4px 0 0}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+@media (max-width:700px){.tiles{grid-template-columns:1fr}}
+.tile{border:1px solid var(--line);border-radius:9px;padding:12px 14px}
+.tile .t{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);font-weight:600}
+.tile .v{font:500 15px "IBM Plex Mono",monospace;margin-top:8px}
+.tile .r{font:12px "IBM Plex Mono",monospace;color:var(--mut)}
+.tile .ib{font:12px "IBM Plex Mono",monospace;color:var(--mut);margin-top:8px}
+.tile .fl{font-size:11.5px;color:var(--warn);margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--mut);font-size:12px;white-space:nowrap}
+td.n{font-family:"IBM Plex Mono",monospace;text-align:right;white-space:nowrap}
+th.n{text-align:right}
+tr.sel td{background:var(--hlbg)}
+tr.sk td{background:var(--hlbg);font-weight:600}
+.m{font-weight:600}
+.note{color:var(--mut);font-size:12px}
+.warn{color:var(--warn)}
+.pos{color:var(--good)} .neg{color:var(--hl)}
+.stack>*+*{margin-top:20px}
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.charts{grid-template-columns:1fr}}
+svg text{font-family:"IBM Plex Sans",sans-serif;fill:var(--mut);font-size:11px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--mut);margin-top:6px}
+.legend i{display:inline-block;width:18px;height:0;border-top:2px solid;vertical-align:middle;margin-right:5px}
+details{margin-top:6px}
+summary{cursor:pointer;color:var(--acc);font-size:13px}
+.eq{font:12.5px "IBM Plex Mono",monospace;line-height:1.7}
+.eq b{font-family:"IBM Plex Sans";font-weight:600}
+</style>
+</head>
+<body>
+<main>
+<h1>Static liquefaction strength ratios — Sadrekarimi (2016) vs. other methods</h1>
+<p class="sub">Undrained yield, s<sub>u</sub>(yield)/σ′<sub>vo</sub>, and liquefied, s<sub>u</sub>(liq)/σ′<sub>vo</sub>, strength ratios from Sadrekarimi (2016) for compression, simple shear and extension, accounting for slope-induced anisotropy K<sub>c</sub>, compared with Olson &amp; Stark (2002), Idriss &amp; Boulanger (2015) and Robertson (2010). Clean sand (FC = 0%) assumed throughout.</p>
+
+<div class="grid">
+<section class="card">
+  <h2>Inputs</h2>
+  <fieldset><legend>Penetration test</legend>
+    <div class="seg" id="seg"><button data-t="SPT" class="on">SPT</button><button data-t="CPT">CPT</button></div>
+    <div class="row" id="rowN"><label>(N1)<sub>60</sub> <small>blows/ft</small></label><input id="N" type="number" step="0.5" value="6"></div>
+    <div class="row" id="rowQ" hidden><label>q<sub>c1</sub> <small>MPa</small></label><input id="q" type="number" step="0.1" value="3"></div>
+    <div class="row"><label>φ′ cap <small>deg — tan φ′ upper bound (I&amp;B, Robertson)</small></label><input id="phi" type="number" step="0.5" value="33"></div>
+  </fieldset>
+  <fieldset><legend>Sadrekarimi (2016)</legend>
+    <div class="row"><label>Slope angle, α <small>deg — infinite slope</small></label><input id="alpha" type="number" step="0.5" value="30"></div>
+    <div class="row"><label>K<sub>c</sub> override <small>(1−sin α)/(1+sin α)</small></label><input id="Kco" type="number" step="0.01" placeholder="auto"></div>
+    <div class="kc" id="kcout"></div>
+    <details><summary>Advanced (b, φ′<sub>cs</sub>)</summary>
+      <div class="row"><label>b — compression</label><input id="bC" type="number" step="0.05" value="0.3"></div>
+      <div class="row"><label>b — simple shear</label><input id="bS" type="number" step="0.05" value="0.3"></div>
+      <div class="row"><label>b — extension</label><input id="bE" type="number" step="0.05" value="1"></div>
+      <div class="row"><label>φ′<sub>cs</sub> — compression (PSC)</label><input id="pC" type="number" step="0.5" value="35"></div>
+      <div class="row"><label>φ′<sub>cs</sub> — simple shear (HCTS)</label><input id="pS" type="number" step="0.5" value="35"></div>
+      <div class="row"><label>φ′<sub>cs</sub> — extension (TxE)</label><input id="pE" type="number" step="0.5" value="30"></div>
+    </details>
+  </fieldset>
+</section>
+
+<div class="stack">
+  <section class="card hero">
+    <h2>Sadrekarimi (2016) — results by mode of shearing</h2>
+    <div class="tiles" id="tiles"></div>
+    <div style="overflow-x:auto"><table id="sk"></table></div>
+    <p class="note" id="sknote"></p>
+  </section>
+
+  <section class="card">
+    <h2>References</h2>
+    <table>
+      <tr><th>Method</th><th>Reference</th></tr>
+      <tr><td class="m">Sadrekarimi (2016)</td><td>Sadrekarimi, A. (2016). Static liquefaction analysis considering principal stress directions and anisotropy. <i>Geotechnical and Geological Engineering</i>, 34, 1135–1154.</td></tr>
+      <tr><td class="m">Olson &amp; Stark (2002)</td><td>Olson, S.M., and Stark, T.D. (2002). Liquefied strength ratio from liquefaction flow failure case histories. <i>Canadian Geotechnical Journal</i>, 39, 629–647.</td></tr>
+      <tr><td class="m">Olson &amp; Stark (2003)†</td><td>Olson, S.M., and Stark, T.D. (2003). Yield strength ratio and liquefaction analysis of slopes and embankments. <i>Journal of Geotechnical and Geoenvironmental Engineering</i>, 129(8), 727–737.</td></tr>
+      <tr><td class="m">Idriss &amp; Boulanger (2015)</td><td>Idriss, I.M., and Boulanger, R.W. (2015). 2nd Ishihara Lecture: SPT- and CPT-based relationships for the residual shear strength of liquefied soils. <i>Soil Dynamics and Earthquake Engineering</i>, 68, 57–68.</td></tr>
+      <tr><td class="m">Robertson (2010)</td><td>Robertson, P.K. (2010). Evaluation of flow liquefaction and liquefied strength using the cone penetration test. <i>Journal of Geotechnical and Geoenvironmental Engineering</i>, 136(6), 842–853.</td></tr>
+    </table>
+  </section>
+</div>
+</div>
+</main>
+
+<script>
+const PA = 0.1013;
+const $ = id => document.getElementById(id);
+const num = id => { const v = $(id).value.trim(); return v === "" ? null : parseFloat(v); };
+const tand = d => Math.tan(d * Math.PI / 180);
+const NA = "N/A";
+function rng(M, key) { const v = [M.lo, M.best, M.hi].filter(r => !r.na && isFinite(r[key])).map(r => r[key]); return v.length ? `${Math.min(...v).toFixed(3)}–${Math.max(...v).toFixed(3)}` : NA; }
+const f3 = x => (x == null || !isFinite(x)) ? "—" : x.toFixed(3);
+const cap1 = s => s[0].toUpperCase() + s.slice(1);
+const MODES = ["compression", "simple shear", "extension"];
+let TEST = "SPT";
+
+// ---- other methods (FC = 0) ----
+const ibSpt = N => Math.exp(N/16 + Math.pow((N-16)/21.2, 3) - 3.0);
+const ibSptN = N => ibSpt(N) * (1 + Math.exp(N/2.4 - 6.6));
+const ibCpt = q => Math.exp(q/24.5 - Math.pow(q/61.7, 2) + Math.pow(q/106, 3) - 4.42);
+const ibCptN = q => ibCpt(q) * (1 + Math.exp(q/11.1 - 9.82));
+const robEq = Q => (0.02199 - 0.0003124*Q) / (1 - 0.02676*Q + 0.0001783*Q*Q);
+
+function others(test, x, phi) {
+  const cap = tand(phi), r = [];
+  if (test === "SPT") {
+    r.push({m:"Olson & Stark (2002)", b:"SPT correlation", liq:0.03 + 0.0075*x, rng:0.03, note: x > 12 ? "(N1)60 > 12: beyond data range" : ""});
+    let v = ibSpt(x);  r.push({m:"Idriss & Boulanger (2015)", b:"void redistribution significant", liq:Math.min(v, cap), note: v > cap ? "capped at tan φ′" : ""});
+    v = ibSptN(x);     r.push({m:"Idriss & Boulanger (2015)", b:"void redistribution negligible", liq:Math.min(v, cap), note: v > cap ? "capped at tan φ′" : ""});
+    r.push({m:"Robertson (2010)", b:"CPT-only method", liq:null, note:"not applicable to SPT"});
+  } else {
+    const qN = x / PA;
+    r.push({m:"Olson & Stark (2002)", b:"CPT correlation", liq:0.03 + 0.0143*x, rng:0.03, note: x > 6.5 ? "qc1 > 6.5 MPa: beyond data range" : ""});
+    let v = ibCpt(qN); r.push({m:"Idriss & Boulanger (2015)", b:`qc1Ncs-Sr = ${qN.toFixed(1)}, void redistribution significant`, liq:Math.min(v, cap), note: v > cap ? "capped at tan φ′" : ""});
+    v = ibCptN(qN);    r.push({m:"Idriss & Boulanger (2015)", b:`qc1Ncs-Sr = ${qN.toFixed(1)}, void redistribution negligible`, liq:Math.min(v, cap), note: v > cap ? "capped at tan φ′" : ""});
+    if (qN > 70) r.push({m:"Robertson (2010)", b:`Qtn,cs = ${qN.toFixed(1)}`, liq:null, note:"Qtn,cs > 70: likely dilative; correlation not applicable"});
+    else r.push({m:"Robertson (2010)", b:`Qtn,cs = ${qN.toFixed(1)}`, liq:Math.min(Math.max(robEq(qN), 0.03), cap), note:"Qtn taken as qc1/pa"});
+  }
+  return r;
+}
+const osYield = (test, x) => test === "SPT" ? 0.205 + 0.0075*x : 0.205 + 0.0143*x;
+
+// ---- Sadrekarimi (2016) ----
+const FIG10 = {"compression":[0.045,-0.320,0.275], "simple shear":[0.053,-0.309,0.251], "extension":[0.120,-0.345,0.228]};
+function ibFromSu(su, mode) { const [a,b,c] = FIG10[mode]; const d = b*b - 4*a*(c - su); return d < 0 ? NaN : (-b - Math.sqrt(d)) / (2*a); }
+const suFromIB = (IB, mode) => { const [a,b,c] = FIG10[mode]; return a*IB*IB + b*IB + c; };
+
+function skMode(su, Kc, mode, b, phi) {
+  const t = tand(45 + phi/2) ** 2, root = Math.sqrt(b*b - b + 1), k = (1 - Kc) / Math.sqrt(Kc);
+  const ru = mode === "compression" ? Kc - 2/((t-1)*root)*su : Kc - 2*(1 + b*t - b)/((t-1)*root)*su;
+  let rs, IBs, IB;
+  if (mode === "compression") { rs = ru/(1 - 0.60*(1-Kc)); IBs = 0.553*rs*rs + 1.621*rs - 1.214; IB = IBs + k; }
+  else if (mode === "simple shear") {
+    const aH = 0.330 + 9.089*Kc - 11.376*b - 5.833*Kc*Kc + 15.333*b*b - 5.848*b*Kc, bH = -0.577*b*b + 1.117*b;
+    rs = ru/(1 - aH*(1-Kc)) + 0.85*bH*Kc*(1-ru); IBs = 1.003*rs*rs + 0.908*rs - 0.963; IB = IBs + 0.80*k;
+  } else { rs = ru/Kc; IBs = 0.959*rs*rs + 0.076*rs - 0.038; IB = IBs - 0.1*k; }
+  if (IB < 0) return {na:true, flag:"Not liquefiable (I<sub>B</sub> &lt; 0)"};
+  const flags = [];
+  let yld = su / (1 - IB);
+  if (IB >= 1) { yld = Infinity; flags.push("I<sub>B</sub> ≥ 1: outside correlation"); }
+  if (ru < 0) flags.push("r<sub>u</sub> &lt; 0: s<sub>u</sub>(liq) high for this K<sub>c</sub>");
+  return {ru, rs, IBs, IB, yld, liq: su, flag: flags.join("; ")};
+}
+
+function sadrekarimi(test, x, p, Kc) {
+  const ss = test === "SPT" ? 0.046 + 0.006*x : 0.022 + 0.017*x, tol = test === "SPT" ? 0.017 : 0.021;
+  const valid = test === "SPT" ? (x > 3 && x < 12) : (x > 0.5 && x < 8);
+  const pars = {"compression":[p.bC,p.pC], "simple shear":[p.bS,p.pS], "extension":[p.bE,p.pE]};
+  const out = {valid, modes:{}};
+  for (const [cs, s0] of [["best", ss], ["lo", ss - tol], ["hi", ss + tol]]) {
+    const IBf = ibFromSu(s0, "simple shear");
+    for (const m of MODES) {
+      const su = m === "simple shear" ? s0 : suFromIB(IBf, m);
+      const r = skMode(su, Kc, m, pars[m][0], pars[m][1]); r.IBf = IBf;
+      (out.modes[m] = out.modes[m] || {})[cs] = r;
+    }
+  }
+  return out;
+}
+
+// ---- main ----
+function params() {
+  return {phi:num("phi") ?? 33, alpha:num("alpha") ?? 0, Kco:num("Kco"),
+    bC:num("bC") ?? 0.3, bS:num("bS") ?? 0.3, bE:num("bE") ?? 1, pC:num("pC") ?? 35, pS:num("pS") ?? 35, pE:num("pE") ?? 30};
+}
+const kcOf = p => p.Kco != null ? p.Kco : (1 - Math.sin(p.alpha*Math.PI/180)) / (1 + Math.sin(p.alpha*Math.PI/180));
+
+function compute() {
+  const p = params(), Kc = kcOf(p), x = num(TEST === "SPT" ? "N" : "q");
+  $("kcout").textContent = `Kc = ${Kc.toFixed(3)}` + (p.Kco != null ? " (override)" : ` from α = ${p.alpha}°`);
+  if (x == null) { ["tiles","sk"].forEach(i => $(i).innerHTML = ""); $("sknote").textContent = "Enter a penetration resistance."; return; }
+  const sk = sadrekarimi(TEST, x, p, Kc);
+  renderTiles(sk); renderSk(sk, p, Kc, x);
+}
+
+function renderTiles(sk) {
+  const Y = `s<sub>u</sub>(yield)/σ′<sub>vo</sub>`, L = `s<sub>u</sub>(liq)/σ′<sub>vo</sub>`;
+  $("tiles").innerHTML = MODES.map(m => {
+    const M = sk.modes[m], b = M.best;
+    if (b.na) return `<div class="tile"><div class="t">${m}</div>
+      <div class="v">${Y} = ${NA}</div><div class="v">${L} = ${NA}</div><div class="fl">${b.flag}</div></div>`;
+    return `<div class="tile"><div class="t">${m}</div>
+      <div class="v">${Y} = ${f3(b.yld)}</div><div class="r">(${rng(M, "yld")})</div>
+      <div class="v">${L} = ${f3(b.liq)}</div><div class="r">(${rng(M, "liq")})</div>
+      <div class="ib">I<sub>B</sub> = ${f3(b.IB)}</div>
+      ${b.flag ? `<div class="fl">${b.flag}</div>` : ""}</div>`;
+  }).join("");
+}
+
+function renderSk(sk, p, Kc, x) {
+  const rows = others(TEST, x, p.phi);
+  let h = `<tr><th>Other methods</th><th>Basis</th><th class="n">s<sub>u</sub>(liq)/σ′<sub>vo</sub></th><th class="n">s<sub>u</sub>(yield)/σ′<sub>vo</sub></th></tr>`;
+  let last = "";
+  for (const r of rows) {
+    const g = r.m !== last; last = r.m;
+    h += `<tr><td class="m">${g ? r.m : ""}</td><td>${r.b}</td><td class="n">${f3(r.liq)}</td><td class="n">—</td></tr>`;
+  }
+  h += `<tr><td class="m">Olson &amp; Stark (2003)†</td><td>yield strength ratio</td><td class="n">—</td><td class="n">${f3(osYield(TEST, x))}</td></tr>`;
+  $("sk").innerHTML = h;
+  $("sknote").innerHTML = `K<sub>c</sub> = ${Kc.toFixed(3)}. † Reference only. Robertson (2010) applies to CPT only.`;
+}
+
+document.querySelectorAll("#seg button").forEach(b => b.onclick = () => {
+  TEST = b.dataset.t;
+  document.querySelectorAll("#seg button").forEach(x => x.classList.toggle("on", x === b));
+  $("rowN").hidden = TEST !== "SPT"; $("rowQ").hidden = TEST !== "CPT"; compute();
+});
+document.querySelectorAll("input,select").forEach(e => e.addEventListener("input", compute));
+compute();
+</script>
+</body>
+</html>
